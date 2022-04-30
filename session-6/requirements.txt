@@ -1,0 +1,9 @@
+matplotlib==3.3.3
+numpy==1.19.4
+Pillow==8.0.1
+torch
+torchvision
+tensorboard
+wandb
+scikit-learn
+pandas
