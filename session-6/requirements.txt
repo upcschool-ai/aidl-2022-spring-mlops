@@ -1,9 +1,9 @@
 matplotlib==3.3.3
 numpy==1.19.4
-Pillow==8.0.1
-torch
-torchvision
-tensorboard
-wandb
-scikit-learn
-pandas
+pandas==1.4.2
+PyYAML==6.0
+scikit-learn==1.0.2
+tensorboard==2.9.0
+torch==1.11.0
+torchvision==0.12.0
+wandb==0.12.15
