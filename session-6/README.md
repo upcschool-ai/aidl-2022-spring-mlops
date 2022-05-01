@@ -1,4 +1,4 @@
-# Session 5
+# Session 6
 Monitoring using Tensorboard and WandB. 
 
 In this session we will solve two very simple tasks: reconstruction and classification
@@ -8,11 +8,11 @@ on a subset of the MNIST dataset. In this hands-on the training itself it's not 
 ### With Conda
 Create a conda environment by running
 ```
-conda create --name aidl-session-5 python=3.8
+conda create --name aidl-session-6 python=3.8
 ```
 Then, activate the environment
 ```
-conda activate aidl-session-5
+conda activate aidl-session-6
 ```
 and install the dependencies
 ```
@@ -22,14 +22,14 @@ pip install -r requirements.txt
 
 To run the project, run
 ```
-python session-5/main.py --task reconstruction --log_framework tensorboard
-python session-5/main.py --task reconstruction --log_framework wandb
-python session-5/main.py --task classification --log_framework tensorboard
-python session-5/main.py --task classification --log_framework wandb
+python session-6/main.py --task reconstruction --log_framework tensorboard
+python session-6/main.py --task reconstruction --log_framework wandb
+python session-6/main.py --task classification --log_framework tensorboard
+python session-6/main.py --task classification --log_framework wandb
 ```
 To run the project with different arguments, run
 ```
-python session-5/main.py --task reconstruction --log_framework tensorboard --latent_dims 64 --n_epochs 10
+python session-6/main.py --task reconstruction --log_framework tensorboard --latent_dims 64 --n_epochs 10
 ```
 
 ## TODO
