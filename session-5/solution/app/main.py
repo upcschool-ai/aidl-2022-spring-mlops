@@ -23,20 +23,20 @@ def _load_model():
     checkpoint_path = pathlib.Path(__file__).parent.absolute() / "state_dict.pt"
     checkpoint = torch.load(checkpoint_path)
 
-    global VOCAB, MODEL, NGRAMS, TOKENIZER
+    global VOCAB, MODEL, NGRAMS, TOKENIZER, MAP_TOKEN2IDX
     VOCAB = checkpoint["vocab"]
     MODEL = SentimentAnalysis(len(VOCAB), checkpoint["embed_dim"], checkpoint["num_class"]).eval()
     MODEL.load_state_dict(checkpoint["model_state_dict"])
     NGRAMS = checkpoint["ngrams"]
     TOKENIZER = get_tokenizer("basic_english")
-
+    MAP_TOKEN2IDX = VOCAB.get_stoi()
 
 # Disable gradients
 @torch.no_grad()
 def predict_review_sentiment(text):
     # Convert text to tensor
     text = torch.tensor(
-        [VOCAB[token] for token in ngrams_iterator(TOKENIZER(text), NGRAMS)]
+        [MAP_TOKEN2IDX[token] for token in ngrams_iterator(TOKENIZER(text), NGRAMS)]
     )
 
     # Compute output

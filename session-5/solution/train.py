@@ -1,15 +1,10 @@
-import os
 import time
-
 import torch
-from torch.serialization import save
 from torch.utils.data import DataLoader
 from torch.utils.data.dataset import random_split
-from torchtext.datasets import text_classification
-from torchtext.datasets import YelpReviewPolarity
-
 from app.model import SentimentAnalysis
-from utils import generate_batch
+from utils import YelpReviewPolarityDatasetLoader
+
 
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
@@ -58,16 +53,15 @@ if __name__ == "__main__":
     N_EPOCHS = 2  # 5 would be ideal, but slower.
 
     # Load the dataset
-    if not os.path.isdir("./data"):
-        os.mkdir('./data')
-    # train_val_dataset, test_dataset = text_classification.DATASETS['YelpReviewPolarity'](
-    #     root='./data', ngrams=NGRAMS, vocab=None)
-    train_val_dataset, test_dataset = YelpReviewPolarity(
-        root='./data', ngrams=NGRAMS)
+    yelp_loader = YelpReviewPolarityDatasetLoader(NGRAMS, BATCH_SIZE, device=device)
 
+    # Retrieve train, validation and test datasets
+    train_val_dataset = yelp_loader.get_train_val_dataset()
+    test_dataset = yelp_loader.get_test_dataset()
 
-    VOCAB_SIZE = len(train_val_dataset.get_vocab())
-    NUM_CLASS = len(train_val_dataset.get_labels())
+    # Retrieve vocabulary size and number of classes
+    VOCAB_SIZE = yelp_loader.get_vocab_size()
+    NUM_CLASS = yelp_loader.get_num_classes()
 
     # Load the model
     model = SentimentAnalysis(VOCAB_SIZE, EMBED_DIM, NUM_CLASS).to(device)
@@ -89,9 +83,9 @@ if __name__ == "__main__":
     # Since we will have inputs of varying size, we will concatenate 
     # all the inputs in a single vector and create a vector with the "offsets" between inputs.
     # You can check the `generate_batch` function for more info.
-    train_loader = DataLoader(train_dataset, batch_size=BATCH_SIZE, shuffle=True, collate_fn=generate_batch)
-    val_loader = DataLoader(valid_dataset, batch_size=BATCH_SIZE, shuffle=False, collate_fn=generate_batch)
-    test_loader = DataLoader(test_dataset, batch_size=BATCH_SIZE, shuffle=False, collate_fn=generate_batch)
+    train_loader = DataLoader(train_dataset, batch_size=BATCH_SIZE, shuffle=True, collate_fn=yelp_loader.generate_batch)
+    val_loader = DataLoader(valid_dataset, batch_size=BATCH_SIZE, shuffle=False, collate_fn=yelp_loader.generate_batch)
+    test_loader = DataLoader(test_dataset, batch_size=BATCH_SIZE, shuffle=False, collate_fn=yelp_loader.generate_batch)
 
 
     for epoch in range(N_EPOCHS):
@@ -120,7 +114,7 @@ if __name__ == "__main__":
     checkpoint = {
         "model_state_dict": model.cpu().state_dict(),
         "optimizer_state_dict": optimizer.state_dict(),
-        "vocab": train_val_dataset.get_vocab(),
+        "vocab": yelp_loader.vocab,
         "ngrams": NGRAMS,
         "embed_dim": EMBED_DIM,
         "num_class": NUM_CLASS,

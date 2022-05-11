@@ -24,7 +24,7 @@ def _load_model():
     checkpoint_path = pathlib.Path(__file__).parent.absolute() / "state_dict.pt"
     checkpoint = torch.load(checkpoint_path)
 
-    global VOCAB, MODEL, NGRAMS, TOKENIZER
+    global VOCAB, MODEL, NGRAMS, TOKENIZER, MAP_TOKEN2IDX
     VOCAB = checkpoint["vocab"]
     # TODO load the model. You can get `embed_dim` and `num_class` from the checkpoint. 
     # TODO Then, load the state dict of the model
@@ -33,6 +33,7 @@ def _load_model():
 
     NGRAMS = checkpoint["ngrams"]
     TOKENIZER = get_tokenizer("basic_english")
+    MAP_TOKEN2IDX = VOCAB.get_stoi()
 
 
 # Disable gradients
@@ -40,7 +41,7 @@ def _load_model():
 def predict_review_sentiment(text):
     # Convert text to tensor
     text = torch.tensor(
-        [VOCAB[token] for token in ngrams_iterator(TOKENIZER(text), NGRAMS)]
+        [MAP_TOKEN2IDX[token] for token in ngrams_iterator(TOKENIZER(text), NGRAMS)]
     )
 
     # Compute output
