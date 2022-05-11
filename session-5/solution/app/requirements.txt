@@ -1,4 +1,4 @@
-Flask==1.1.2
-torch==1.7.1
-torchtext==0.8.1
+torch==1.10.2
+torchtext==0.11.2
+Flask==2.1.0
 gunicorn==20.0.4
