@@ -48,7 +48,7 @@ class YelpReviewPolarityDatasetLoader(object):
     """
     Yelp Review Polarity dataset loader helper class.
     """
-    def __init__(self, ngrams: int = 2, batch_size: int = 16, data_dir: str = ".data",
+    def __init__(self, ngrams: int = 2, batch_size: int = 16, data_dir: str = "data",
                  device: Optional[torch.device] = None):
         # Dataset loader hyper-parameters
         self.NGRAMS = ngrams

@@ -76,8 +76,7 @@ if __name__ == "__main__":
 
     # Split train and val datasets
     train_len = int(len(train_val_dataset) * 0.95)
-    train_dataset, valid_dataset = \
-        random_split(train_val_dataset, [train_len, len(train_val_dataset) - train_len])
+    train_dataset, valid_dataset = random_split(train_val_dataset, [train_len, len(train_val_dataset) - train_len])
     
     # DataLoader needs an special function to generate the batches. 
     # Since we will have inputs of varying size, we will concatenate 
