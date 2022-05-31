@@ -1,0 +1,4 @@
+1-use-gradient-boosting/checkpoints/
+2-do-transfer-learning/hymenoptera_data
+2-do-transfer-learning/hymenoptera_data/*
+2-do-transfer-learning/hymenoptera_data.zip
